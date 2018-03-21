@@ -1,0 +1,11 @@
+{
+  "version": "/v1",
+  "hosts": {
+    "front": "http://localhost:3000"
+  },
+  "api": {
+    "/api": "http://localhost:3100"
+  },
+  "redis": {
+  }
+}
