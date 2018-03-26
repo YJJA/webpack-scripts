@@ -5,15 +5,15 @@ const config = require('../config')
 const copyServerOfName = (dist, name) => {
   return Promise.all([
     fse.copy(
-      path.resolve(`./src/${name}/index.js`),
+      path.resolve(`./packages/${name}/index.js`),
       path.resolve(dist, `./${name}/index.js`)
     ),
     fse.copy(
-      path.resolve(`./src/${name}/server`),
+      path.resolve(`./packages/${name}/server`),
       path.resolve(dist, `./${name}/server`)
     ),
     fse.copy(
-      path.resolve(`./src/${name}/locale`),
+      path.resolve(`./packages/${name}/locale`),
       path.resolve(dist, `./${name}/locale`)
     )
   ])
@@ -22,12 +22,8 @@ const copyServerOfName = (dist, name) => {
 const copyServerCommon = (dist) => {
   return Promise.all([
     fse.copy(
-      path.resolve(`./src/server`),
-      path.resolve(dist, `./server`)
-    ),
-    fse.copy(
-      path.resolve(`./src/config`),
-      path.resolve(dist, `./config`)
+      path.resolve(`./packages/shared/server`),
+      path.resolve(dist, `./shared/server`)
     )
   ])
 }

@@ -3,10 +3,10 @@ const yargs = require('yargs')
 const buildEcosystemFile = require('./utils/buildEcosystemFile')
 const buildPackageFile = require('./utils/buildPackageFile')
 
-const configuration = (name, argv) => {
+const configuration = async (names, argv) => {
   return Promise.all([
-    buildEcosystemFile(name, argv),
-    buildPackageFile(name, argv)
+    buildEcosystemFile(names, argv),
+    buildPackageFile(names, argv)
   ])
 }
 

@@ -3,17 +3,6 @@ const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 const stylesPaths = [
-  path.resolve(`./src/admin/components`),
-  path.resolve(`./src/admin/containers`),
-  path.resolve(`./src/front/components`),
-  path.resolve(`./src/front/containers`),
-  path.resolve(`./src/business/components`),
-  path.resolve(`./src/business/containers`),
-  path.resolve(`./src/sso/components`),
-  path.resolve(`./src/sso/containers`),
-  path.resolve(`./src/mobile/components`),
-  path.resolve(`./src/mobile/containers`),
-  path.resolve(`./src/components`)
 ]
 
 module.exports = function (dev, name) {
@@ -50,7 +39,7 @@ module.exports = function (dev, name) {
       test: /\.js$/,
       enforce: 'pre',
       loader: 'eslint-loader',
-      include: [path.resolve('./src')],
+      include: [path.resolve('./packages')],
       exclude: /node_modules/,
       options: {
         formatter: require('eslint-friendly-formatter')
@@ -58,7 +47,7 @@ module.exports = function (dev, name) {
     },
     {
       test: /\.js$/,
-      include: [path.resolve('./src')],
+      include: [path.resolve('./packages')],
       exclude: /node_modules/,
       loader: 'babel-loader',
       options: {

@@ -16,7 +16,7 @@ module.exports = function webpackServerConfig(name, argv) {
   const dev = process.env.NODE_ENV === 'development'
   // entry
   let entry = [
-    path.resolve(`src/${name}/index`)
+    path.resolve(`packages/${name}/index`)
   ]
   if (dev) {
     entry.push.apply(entry, [

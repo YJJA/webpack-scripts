@@ -7,15 +7,15 @@
 const path = require('path')
 const yargs = require('yargs')
 const webpack = require('webpack')
+const fse = require('fs-extra')
 const config = require('./config')
 const webpackClientConfig = require('./webpack/webpack.client.config')
-const fse = require('fs-extra')
 const copyServer = require('./utils/copyServer')
 
 process.env.NODE_ENV = 'production'
 
 // build
-const build = (names, argv) => {
+const build = async (names, argv) => {
   names = Array.isArray(names) ? names : [names]
   const promises = names.map(async (name) => {
     console.log(`\n${name} client & server build start .....\n`)

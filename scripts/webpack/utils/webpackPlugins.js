@@ -14,23 +14,19 @@ module.exports = function (dev, name) {
   let plugins = [
     new HtmlWebpackPlugin({
       filename: dev ? 'view/index.html' : '../index.html',
-      template: path.resolve(`./src/${name}/index.html`)
+      template: path.resolve(`./packages/${name}/index.html`)
     }),
     new webpack.LoaderOptionsPlugin({
       debug: dev
     }),
     new CopyWebpackPlugin([
       {
-        from: path.resolve('src', name, 'public'),
+        from: path.resolve('packages', name, 'public'),
         to: ''
       }
     ]),
     new webpack.DefinePlugin({
-      'process.env.RUNTIME_ENV': JSON.stringify('client'),
-      'process.env.NODE_ENV': JSON.stringify(dev ? 'development' : 'production'),
-      'process.env.BUILD_TIME': JSON.stringify(moment().format('YYYY-MM-DD HH:mm:ss')),
-      'process.env.PROJECT_NAME': JSON.stringify(name),
-      'process.env.PROJECT_VERSION': JSON.stringify(packageJson.version)
+      'process.env.NODE_ENV': JSON.stringify(dev ? 'development' : 'production')
     }),
     new LodashModuleReplacementPlugin({
       paths: true

@@ -2,7 +2,6 @@ module.exports = {
   verbose: true,
   collectCoverageFrom: [
     'src/front/containers/**/*.js',
-    'src/front/components/**/*.js',
     '!src/front/**/__tests__'
   ],
   moduleNameMapper: {

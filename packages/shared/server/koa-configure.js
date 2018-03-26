@@ -7,7 +7,7 @@ const proxy = require('koa-proxies')
 const session = require('koa-session')
 const serve = require('koa-static')
 const mount = require('koa-mount')
-const config = require('../config')
+const config = require('./config')
 const RedisStore = require('./RedisStore')
 const routes = require('./routes')
 
@@ -23,7 +23,7 @@ module.exports = function (app, {middlewares}) {
   app.use(morgan(isdev ? 'dev' : 'combined'))
 
   // static
-  app.use(serve(path.resolve(__dirname, `../${appId}/public`), {
+  app.use(serve(path.resolve(__dirname, `../../${appId}/public`), {
     maxage: isdev ? 3600 * 1000 : 0
   }))
 

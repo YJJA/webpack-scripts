@@ -1,0 +1,54 @@
+{
+  "version": "",
+  "hosts": {
+    "mainiway-front": "http://10.99.2.125:4800",
+    "mainiway-sso": "http://10.99.2.125:4802",
+    "mainiway-business": "http://10.99.2.125:4804",
+    "mainiway-admin": "http://10.99.2.125:4806",
+    "mainiway-mobile": "http://10.99.2.125:4808"
+  },
+  "fileview": "http://10.99.2.127/",
+  "api": {
+    "/front": "http://10.99.2.125",
+    "/ecback": "http://10.99.2.125",
+    "/manufactory": "http://10.99.2.125",
+    "/pay": "http://10.99.2.125",
+    "/app": "http://10.99.2.125"
+  },
+  "acctTypes": {
+    "mainiway-front": [ 0 ],
+    "mainiway-business": [ 0, 1 ],
+    "mainiway-admin": [ 2 ]
+  },
+  "redis": {
+    "options": {
+      "db": 1
+    },
+    "nodes": [
+      {
+        "host": "10.99.2.196",
+        "port": 7000
+      },
+      {
+        "host": "10.99.2.196",
+        "port": 7001
+      },
+      {
+        "host": "10.99.2.196",
+        "port": 7002
+      },
+      {
+        "host": "10.99.2.196",
+        "port": 7003
+      },
+      {
+        "host": "10.99.2.196",
+        "port": 7004
+      },
+      {
+        "host": "10.99.2.196",
+        "port": 7005
+      }
+    ]
+  }
+}

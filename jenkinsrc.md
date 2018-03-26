@@ -32,8 +32,8 @@ node 8.6
 npm -v
 node -v
 npm install
-node tools/build front admin sso
-node tools/configuration front admin sso --env develop
+node scripts/build front admin sso
+node scripts/configuration front admin sso --env develop
 ```
 
 # 构建后操作
@@ -68,9 +68,6 @@ node -v
 npm -v
 yarn -v
 pm2 -v
-pm2 delete cloudcut-admin  cloudcut-front  cloudcut-sso
-cd cloudcut-web/admin && yarn  && pm2 start ecosystem.json
-cd ../front && yarn   && pm2 start ecosystem.json
-cd ../sso && yarn  && pm2 start ecosystem.json
+
 pm2 ls
 ```

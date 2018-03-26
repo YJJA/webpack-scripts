@@ -3,8 +3,15 @@ const path = require('path')
 const config = require('../config')
 
 module.exports = function(names, argv) {
-  const packageJsonPath = path.resolve('package.json')
-  const distPackageJsonPath = path.resolve(`${config.dist}/package.json`)
-
-  return fse.copy(packageJsonPath, distPackageJsonPath)
+  const promises = names.map(async (name) => {
+    const packageJsonPath = path.resolve(`packages/${name}/package.json`)
+    const distPackageJsonPath = path.resolve(`${config.dist}/${name}/package.json`)
+    return fse.copy(packageJsonPath, distPackageJsonPath)
+  })
+  const rootPackageJsonPath = path.resolve(`package.json`)
+  const distRootPackageJsonPath = path.resolve(`${config.distRoot}/package.json`)
+  promises.push(
+    fse.copy(rootPackageJsonPath, distRootPackageJsonPath)
+  )
+  return Promise.all(promises)
 }

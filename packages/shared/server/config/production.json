@@ -1,0 +1,28 @@
+{
+  "version": "/v1",
+  "hosts": {
+    "mainiway-front": "http://www.idinbao.com",
+    "mainiway-sso": "http://login.idinbao.com",
+    "mainiway-business": "http://center.idinbao.com",
+    "mainiway-admin": "http://admin.idinbao.com",
+    "mainiway-mobile": "http://m.idinbao.com"
+  },
+  "fileview": "http://file.idinbao.com/",
+  "api": {
+    "/front": "http://www.idinbao.com",
+    "/ecback": "http://www.idinbao.com",
+    "/manufactory/auth": "http://www.idinbao.com",
+    "/manufactory": "http://www.idinbao.com",
+    "/pay": "http://www.idinbao.com"
+  },
+  "acctTypes": {
+    "mainiway-front": [0],
+    "mainiway-business": [0, 1],
+    "mainiway-admin": [2]
+  },
+  "redis": {
+    "db": 1,
+    "host": "redis.mwc2m.com",
+    "port": 6379
+  }
+}
