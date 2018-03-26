@@ -16,7 +16,7 @@ module.exports = function (app, {middlewares}) {
   const isdev = process.env.NODE_ENV === 'development'
   const appId = app.context.appId
 
-  app.keys = [`mainiway ${appId} GfQHM5H9daCX`, `mainiway ${appId} 8ydDke7KP5nW`]
+  app.keys = [`${appId} GfQHM5H9daCX`, `${appId} 8ydDke7KP5nW`]
   // helmet
   app.use(helmet())
   // logger
@@ -31,8 +31,8 @@ module.exports = function (app, {middlewares}) {
   const store = new RedisStore(config.redis)
   app.use(session({
     store,
-    prefix: `mainiway:${appId}:`,
-    key: `mainiway:${appId}`,
+    prefix: `${appId}:`,
+    key: `${appId}`,
     maxAge: 3 * 60 * 60 * 1000,
     rolling: true,
     renew: true

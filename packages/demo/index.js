@@ -1,7 +1,7 @@
 const createServer = require('../shared/server/createServer')
 let requestHandler = require('./server')
 
-const port = 4800
+const port = 3000
 const server = createServer(port, requestHandler)
 
 if (module.hot) {

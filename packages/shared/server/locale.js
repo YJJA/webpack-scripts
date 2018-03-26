@@ -2,28 +2,6 @@ const api = require('./api')
 const config = require('./config')
 
 module.exports = async (ctx, next) => {
-  // 尝试重新获取用户信息
-  if (ctx.session.token) {
-    try {
-      const [userInfo, userHead] = await Promise.all([
-        api.userInfo(ctx.session.token),
-        api.userHead(ctx.session.token)
-      ])
-      ctx.session.user = {
-        ...userInfo.data,
-        acctIcon: userHead.data.acctIcon,
-        acctIcon1: userInfo.data.acctIcon
-      }
-    } catch (e) {
-      if (e.status === 4002) {
-        ctx.session.user = null
-        ctx.session.token = null
-      }
-      console.log('----------------------')
-      console.log('尝试重新获取用户信息失败', e)
-    }
-  }
-
   const initialState = {
     user: {
       data: ctx.session.user || null
