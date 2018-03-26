@@ -2,12 +2,13 @@ import './theme/global.css'
 
 import '@babel/polyfill'
 import React from 'react'
-import {render} from 'react-dom'
+import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import {ConnectedRouter as Router} from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
 import configureStore from './redux/store'
 import App from './containers/App'
+import Loadable from 'react-loadable'
 
 const initialState = window.__INITIAL_STATE__
 const history = createHistory()
@@ -22,11 +23,13 @@ history.listen(location => {
   prevLocation = location
 })
 
-render(
-  <Provider store={store}>
-    <Router history={history}>
-      <App/>
-    </Router>
-  </Provider>,
-  mountNode
-)
+Loadable.preloadReady().then(() => {
+  ReactDOM.render(
+    <Provider store={store}>
+      <Router history={history}>
+        <App/>
+      </Router>
+    </Provider>,
+    mountNode
+  )
+})

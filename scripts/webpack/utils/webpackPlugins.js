@@ -7,8 +7,10 @@ const CopyWebpackPlugin = require('copy-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 // const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
+const {ReactLoadablePlugin} = require('react-loadable/webpack')
 
 const packageJson = require(path.resolve('./package.json'))
+const config = require('../../config')
 
 module.exports = function (dev, name) {
   let plugins = [
@@ -30,6 +32,9 @@ module.exports = function (dev, name) {
     }),
     new LodashModuleReplacementPlugin({
       paths: true
+    }),
+    new ReactLoadablePlugin({
+      filename: `${dev ? config.temp : config.dist}/${name}/react-loadable.json`
     })
   ]
 

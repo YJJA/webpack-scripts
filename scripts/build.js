@@ -10,6 +10,7 @@ const webpack = require('webpack')
 const fse = require('fs-extra')
 const config = require('./config')
 const webpackClientConfig = require('./webpack/webpack.client.config')
+const webpackServerConfig = require('./webpack/webpack.server.config')
 const copyServer = require('./utils/copyServer')
 
 process.env.NODE_ENV = 'production'
@@ -19,9 +20,11 @@ const build = async (names, argv) => {
   names = Array.isArray(names) ? names : [names]
   const promises = names.map(async (name) => {
     console.log(`\n${name} client & server build start .....\n`)
-    await copyServer(name, argv)
+    // await copyServer(name, argv)
+    const serverConfig = webpackServerConfig(name, argv)
     await fse.remove(path.resolve(config.dist, name, 'public', 'static'))
     const clientConfig = webpackClientConfig(name, argv)
+    await runWebpack(serverConfig)
     await runWebpack(clientConfig)
     console.log(`\n${name} client & server build end .....\n`)
   })

@@ -1,4 +1,4 @@
-const createServer = require('../shared/server/createServer')
+const createServer = require('./server/createServer')
 let requestHandler = require('./server')
 
 const port = 3000
