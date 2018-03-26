@@ -11,11 +11,6 @@ module.exports = async (ctx, next) => {
     ctx.session.view = 1
   }
 
-  if (process.env.NODE_ENV === 'development') {
-    console.log(ctx.session.user)
-    console.log(ctx.session.token)
-  }
-
   const indexPath = path.resolve(__dirname, `../../${ctx.appId}/index.html`)
   let content = await fse.readFile(indexPath, 'utf8')
 

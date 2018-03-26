@@ -1,3 +1,4 @@
+const Koa = require('koa')
 const path = require('path')
 const http = require('http')
 const bodyParser = require('koa-bodyparser')
@@ -9,22 +10,26 @@ const serve = require('koa-static')
 const mount = require('koa-mount')
 const config = require('./config')
 const RedisStore = require('./RedisStore')
-const routes = require('./routes')
+
+const isDev = process.env.NODE_ENV === 'development'
 
 // koa-configure
-module.exports = function (app, {middlewares}) {
-  const isdev = process.env.NODE_ENV === 'development'
-  const appId = app.context.appId
+module.exports = function koaConfigure({
+  appId,
+  middlewares
+}) {
+  const app = new Koa()
+  app.context.appId = appId
 
   app.keys = [`${appId} GfQHM5H9daCX`, `${appId} 8ydDke7KP5nW`]
   // helmet
   app.use(helmet())
   // logger
-  app.use(morgan(isdev ? 'dev' : 'combined'))
+  app.use(morgan(isDev ? 'dev' : 'combined'))
 
   // static
   app.use(serve(path.resolve(__dirname, `../../${appId}/public`), {
-    maxage: isdev ? 3600 * 1000 : 0
+    maxage: isDev ? 3600 * 1000 : 0
   }))
 
   // session
@@ -64,13 +69,12 @@ module.exports = function (app, {middlewares}) {
       target: config.api[key],
       changeOrigin: true,
       rewrite: path => path.replace(new RegExp(`^(${key})`), `${config.version}$1`),
-      logs: isdev
+      logs: isDev
     }))
   })
 
   // body parse
   app.use(bodyParser())
-  app.use(routes)
 
   // middleware
   if (Array.isArray(middlewares)) {
