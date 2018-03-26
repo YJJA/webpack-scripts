@@ -4,7 +4,7 @@ import Title from '../../components/Title'
 
 function Home(props) {
   return (
-    <Title>this is home page</Title>
+    <Title>This is Home Page</Title>
   )
 }
 

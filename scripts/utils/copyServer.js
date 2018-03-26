@@ -11,10 +11,6 @@ const copyServerOfName = (dist, name) => {
     fse.copy(
       path.resolve(`./packages/${name}/server`),
       path.resolve(dist, `./${name}/server`)
-    ),
-    fse.copy(
-      path.resolve(`./packages/${name}/locale`),
-      path.resolve(dist, `./${name}/locale`)
     )
   ])
 }

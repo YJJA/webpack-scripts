@@ -1,6 +1,5 @@
 import React from 'react'
-import {ConnectedRouter as Router} from 'react-router-redux'
-import {Route} from 'react-router-dom'
+import {Switch, Route} from 'react-router-dom'
 import Loadable from 'react-loadable'
 
 import Loading from '../../components/Loading'
@@ -15,12 +14,12 @@ const NotFound = Loadable({
   loading: Loading
 })
 
-function App({history}) {
+function App() {
   return (
-    <Router history={history}>
-      <Route path="/" exart component={Home} />
+    <Switch>
+      <Route path="/" exact component={Home} />
       <Route component={NotFound} />
-    </Router>
+    </Switch>
   )
 }
 
