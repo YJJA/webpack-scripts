@@ -19,8 +19,8 @@ app.use(async (ctx, next) => {
   })
   const store = configureStore(history)
 
-  // const indexPath = path.resolve(__dirname, `./index.html`)
-  // let content = await fse.readFile(indexPath, 'utf8')
+  const indexPath = path.resolve(__dirname, `./index.html`)
+  let content = await fse.readFile(indexPath, 'utf8')
 
   const statsPath = path.resolve(__dirname, './react-loadable.json')
   const stats = await fse.readJSON(statsPath)
@@ -40,32 +40,15 @@ app.use(async (ctx, next) => {
   const styles = bundles.filter(bundle => bundle.file.endsWith('.css'))
   const scripts = bundles.filter(bundle => bundle.file.endsWith('.js'))
 
-  const content = `
-<!doctype html>
-<html lang="zh-CN">
-<head>
-  <meta charset="utf-8">
-  <meta name="renderer" content="webkit">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title></title>
-  <meta name="keywords" content="" />
-  <meta name="description" content="">
-  <link rel="dns-prefetch" href="" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-touch-fullscreen" content="yes">
-  <meta name="msapplication-tap-highlight" content="no">
-  ${styles.map(bundle => `<link href="/${bundle.file}" rel="stylesheet"/>`).join('\n')}
-</head>
-<body>
-  <div id="app" class="app">${html}</div>
-  <script src="/static/scripts/manifest.js"></script>
-  ${scripts.map(bundle => `<script src="/${bundle.file}"></script>`).join('\n')}
-  <script src="/static/scripts/main.js"></script>
-</body>
-</html>
-`
+  content = content.replace('<!--html-->', html)
+
+  content = content.replace(/(<\/head>)/, `${styles.map(bundle => {
+    return `<link href="/${bundle.file}" rel="stylesheet"/>`
+  }).join('\n')}$1`)
+
+  content = content.replace(/(<\/body>)/, `${scripts.map(bundle => {
+    return `<script src="/${bundle.file}"></script>`
+  }).join('\n')}<script>window.main()</script>$1`)
 
   ctx.body = content
 })

@@ -1,4 +1,3 @@
-import {hot} from 'react-hot-loader'
-import Home from './Home'
+import HomeContainer from './HomeContainer'
 
-export default hot(module)(Home)
+export default HomeContainer

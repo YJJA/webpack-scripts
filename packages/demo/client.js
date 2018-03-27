@@ -13,7 +13,6 @@ import Loadable from 'react-loadable'
 const initialState = window.__INITIAL_STATE__
 const history = createHistory()
 const store = configureStore(history, initialState)
-const mountNode = document.getElementById('app')
 
 let prevLocation = {}
 history.listen(location => {
@@ -23,13 +22,15 @@ history.listen(location => {
   prevLocation = location
 })
 
-Loadable.preloadReady().then(() => {
-  ReactDOM.render(
-    <Provider store={store}>
-      <Router history={history}>
-        <App/>
-      </Router>
-    </Provider>,
-    mountNode
-  )
-})
+window.main = () => {
+  Loadable.preloadReady().then(() => {
+    ReactDOM.hydrate(
+      <Provider store={store}>
+        <Router history={history}>
+          <App/>
+        </Router>
+      </Provider>,
+      document.getElementById('app')
+    )
+  })
+}
