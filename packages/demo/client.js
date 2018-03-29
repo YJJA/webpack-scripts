@@ -1,5 +1,5 @@
 import 'normalize.css'
-import './theme/global.css'
+import './theme/global'
 
 import '@babel/polyfill'
 import React from 'react'
@@ -7,9 +7,9 @@ import ReactDOM from 'react-dom'
 import {Provider} from 'react-redux'
 import {ConnectedRouter as Router} from 'react-router-redux'
 import createHistory from 'history/createBrowserHistory'
+import Loadable from 'react-loadable'
 import configureStore from './redux/store'
 import App from './containers/App'
-import Loadable from 'react-loadable'
 
 const initialState = window.__INITIAL_STATE__
 const history = createHistory()

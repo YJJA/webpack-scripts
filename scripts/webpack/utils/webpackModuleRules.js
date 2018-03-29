@@ -3,19 +3,6 @@ const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = function (dev, name) {
-  const cssNormalLoaders = [
-    {
-      loader: 'css-loader',
-      options: {
-        sourceMap: dev,
-        minimize: !dev,
-        importLoaders: 1,
-        discardComments: { removeAll: true }
-      }
-    },
-    'postcss-loader'
-  ]
-
   return [
     {
       test: /\.js$/,
@@ -38,16 +25,9 @@ module.exports = function (dev, name) {
     },
     {
       test: /\.css$/,
-      ...(dev ? {
-        loaders: [
-          'style-loader',
-          ...cssNormalLoaders
-        ]
-      } : {
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: cssNormalLoaders
-        })
+      use: ExtractTextPlugin.extract({
+        fallback: 'style-loader',
+        use: ['css-loader']
       })
     },
     {

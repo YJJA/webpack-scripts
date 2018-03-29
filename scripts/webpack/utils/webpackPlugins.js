@@ -28,6 +28,7 @@ module.exports = function (dev, name) {
       }
     ]),
     new webpack.DefinePlugin({
+      'process.env.RUNTIME_ENV': JSON.stringify('client'),
       'process.env.NODE_ENV': JSON.stringify(dev ? 'development' : 'production')
     }),
     new LodashModuleReplacementPlugin({
@@ -35,6 +36,10 @@ module.exports = function (dev, name) {
     }),
     new ReactLoadablePlugin({
       filename: `${dev ? config.temp : config.dist}/${name}/react-loadable.json`
+    }),
+    new ExtractTextPlugin({
+      filename: `static/styles/[name]${dev ? '' : '.[contenthash]'}` + '.css',
+      allChunks: true
     })
   ]
 
@@ -45,12 +50,7 @@ module.exports = function (dev, name) {
     ]
   } else {
     plugins = [
-      ...plugins,
-      new ExtractTextPlugin({
-        filename: `static/styles/[name]${dev ? '' : '.[contenthash]'}` + '.css',
-        allChunks: true
-      })// ,
-      // new BundleAnalyzerPlugin()
+      ...plugins
     ]
   }
 

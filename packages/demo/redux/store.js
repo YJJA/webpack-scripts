@@ -4,7 +4,9 @@ import rootReducer from './reducer'
 import {routerMiddleware} from 'react-router-redux'
 
 const logger = store => next => action => {
-  console.log('dispatching', action)
+  if (process.env.RUNTIME_ENV === 'client') {
+    console.log('dispatching', action)
+  }
   return next(action)
 }
 

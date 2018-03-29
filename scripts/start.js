@@ -24,13 +24,13 @@ const start = async (name, argv) => {
   // 启动客户端编译服务
   const clientPromise = watchClient(name, argv)
   // 启动服务端编译服务
-  let serverpath = ''
-  if (argv.server) {
-    console.log('watchServer')
-    serverpath = await watchServer(name, argv)
-  } else {
-    serverpath = await copyServer(name, argv)
-  }
+  let serverpath = await watchServer(name, argv)
+  // if (argv.server) {
+  //   console.log('watchServer')
+  //   serverpath = await watchServer(name, argv)
+  // } else {
+  //   serverpath = await copyServer(name, argv)
+  // }
   const serverPromise = runServer(serverpath)
   const [middleware, port] = await Promise.all([clientPromise, serverPromise])
 

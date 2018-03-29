@@ -32,11 +32,6 @@ module.exports = function webpackClientConfig(name, argv) {
         path.resolve('./node_modules')
       ]
     },
-    optimization: {
-      runtimeChunk: {
-        name: 'manifest'
-      }
-    },
     module: {
       rules: webpackModuleRules(dev, name)
     },
