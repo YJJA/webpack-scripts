@@ -10,6 +10,9 @@
   ],
   "plugins": [
     "babel-plugin-lodash",
+    ["babel-plugin-styled-components", {
+      "ssr": true
+    }],
     ["babel-plugin-import", {"libraryName": "antd"}],
     "@babel/plugin-transform-runtime",
     "@babel/plugin-proposal-object-rest-spread",

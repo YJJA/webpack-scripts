@@ -1,3 +1,4 @@
+import 'normalize.css'
 import './theme/global.css'
 
 import '@babel/polyfill'

@@ -1,7 +1,7 @@
-const http = require('http')
+import http from 'http'
 
 // createHttp
-module.exports = function createServer(port, requestHandler) {
+export default function createServer(port, requestHandler) {
   let server = http.createServer()
   server.on('request', requestHandler)
   server.on('error', onError)

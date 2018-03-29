@@ -36,6 +36,9 @@ module.exports = function webpackServerModuleRules(dev, name) {
           require.resolve('@babel/plugin-proposal-object-rest-spread'),
           require.resolve('@babel/plugin-proposal-class-properties'),
           require.resolve('@babel/plugin-syntax-dynamic-import'),
+          [require.resolve('babel-plugin-styled-components'), {
+            ssr: true
+          }],
           require.resolve('react-hot-loader/babel'),
           require.resolve('react-loadable/babel')
         ]

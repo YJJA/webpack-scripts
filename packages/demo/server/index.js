@@ -8,6 +8,7 @@ import {ConnectedRouter as Router} from 'react-router-redux'
 import createHistory from 'history/createMemoryHistory'
 import Loadable from 'react-loadable'
 import {getBundles} from 'react-loadable/webpack'
+import {ServerStyleSheet, StyleSheetManager} from 'styled-components'
 import configureStore from '../redux/store'
 import App from '../containers/App'
 
@@ -26,16 +27,20 @@ app.use(async (ctx, next) => {
   const stats = await fse.readJSON(statsPath)
 
   const modules = []
+  const sheet = new ServerStyleSheet()
   const html = ReactDOMServer.renderToString(
-    <Loadable.Capture report={moduleName => modules.push(moduleName)}>
-      <Provider store={store}>
-        <Router history={history}>
-          <App/>
-        </Router>
-      </Provider>
-    </Loadable.Capture>
+    <StyleSheetManager sheet={sheet.instance}>
+      <Loadable.Capture report={moduleName => modules.push(moduleName)}>
+        <Provider store={store}>
+          <Router history={history}>
+            <App/>
+          </Router>
+        </Provider>
+      </Loadable.Capture>
+    </StyleSheetManager>
   )
 
+  const styleTags = sheet.getStyleTags()
   const bundles = getBundles(stats, modules)
   const styles = bundles.filter(bundle => bundle.file.endsWith('.css'))
   const scripts = bundles.filter(bundle => bundle.file.endsWith('.js'))
@@ -45,6 +50,7 @@ app.use(async (ctx, next) => {
   content = content.replace(/(<\/head>)/, `${styles.map(bundle => {
     return `<link href="/${bundle.file}" rel="stylesheet"/>`
   }).join('\n')}$1`)
+  content = content.replace(/(<\/head>)/, `${styleTags}$1`)
 
   content = content.replace(/(<\/body>)/, `${scripts.map(bundle => {
     return `<script src="/${bundle.file}"></script>`
@@ -53,4 +59,4 @@ app.use(async (ctx, next) => {
   ctx.body = content
 })
 
-module.exports = app.callback()
+export default app.callback()

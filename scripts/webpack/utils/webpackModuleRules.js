@@ -2,25 +2,7 @@
 const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-const stylesPaths = [
-]
-
 module.exports = function (dev, name) {
-  const cssModuleLoaders = [
-    {
-      loader: 'css-loader',
-      options: {
-        modules: true,
-        sourceMap: dev,
-        minimize: !dev,
-        importLoaders: 1,
-        localIdentName: '[folder]-[name]-[local]--[hash:base64:5]',
-        discardComments: { removeAll: true }
-      }
-    },
-    'postcss-loader'
-  ]
-
   const cssNormalLoaders = [
     {
       loader: 'css-loader',
@@ -56,22 +38,6 @@ module.exports = function (dev, name) {
     },
     {
       test: /\.css$/,
-      include: stylesPaths,
-      ...(dev ? {
-        loaders: [
-          'style-loader',
-          ...cssModuleLoaders
-        ]
-      } : {
-        use: ExtractTextPlugin.extract({
-          fallback: 'style-loader',
-          use: cssModuleLoaders
-        })
-      })
-    },
-    {
-      test: /\.css$/,
-      exclude: stylesPaths,
       ...(dev ? {
         loaders: [
           'style-loader',
