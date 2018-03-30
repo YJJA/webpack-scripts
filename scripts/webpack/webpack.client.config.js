@@ -21,7 +21,7 @@ module.exports = function webpackClientConfig(name, argv) {
       path.resolve(`./packages/${name}/client.js`)
     ] : path.resolve(`./packages/${name}/client.js`),
     output: {
-      path: path.resolve(config.dist, name, 'public'),
+      path: path.resolve(config.dist, name),
       publicPath: '/',
       filename: `static/scripts/[name]${dev ? '' : '.[chunkhash]'}.js`,
       chunkFilename: `static/scripts/[name]${dev ? '' : '.[chunkhash]'}.js`

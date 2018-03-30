@@ -2,9 +2,6 @@
 const path = require('path')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
-const stylesPaths = [
-]
-
 module.exports = function webpackServerModuleRules(dev, name) {
   return [
     {
@@ -50,6 +47,14 @@ module.exports = function webpackServerModuleRules(dev, name) {
       options: {
         limit: dev ? 1024 * 100 : 1024 * 8,
         name: `static/images/[name]${dev ? '' : '.[hash:8]'}.[ext]`
+      }
+    },
+    {
+      test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
+      loader: 'url-loader',
+      query: {
+        limit: dev ? 1024 * 100 : 1024 * 8,
+        name: `static/fonts/[name]${dev ? '' : '.[hash:8]'}.[ext]`
       }
     }
   ]

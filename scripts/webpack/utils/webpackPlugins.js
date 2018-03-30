@@ -15,7 +15,7 @@ const config = require('../../config')
 module.exports = function (dev, name) {
   let plugins = [
     new HtmlWebpackPlugin({
-      filename: dev ? 'view/index.html' : '../index.html',
+      filename: dev ? 'view/index.html' : './index.html',
       template: path.resolve(`./packages/${name}/index.html`)
     }),
     new webpack.LoaderOptionsPlugin({
@@ -24,7 +24,7 @@ module.exports = function (dev, name) {
     new CopyWebpackPlugin([
       {
         from: path.resolve('packages', name, 'public'),
-        to: ''
+        to: dev ? '' : 'public'
       }
     ]),
     new webpack.DefinePlugin({

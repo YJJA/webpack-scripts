@@ -1,4 +1,5 @@
 import Koa from 'koa'
+import serve from 'koa-static'
 import path from 'path'
 import fse from 'fs-extra'
 import React from 'react'
@@ -15,6 +16,18 @@ import App from '../containers/App'
 const app = new Koa()
 
 app.use(async (ctx, next) => {
+  if (/^\/static\//.test(ctx.path)) {
+    await serve(__dirname)(ctx, next)
+  } else {
+    await next()
+  }
+})
+
+app.use(serve(path.resolve(__dirname, 'public')))
+
+app.use(async (ctx, next) => {
+  await Loadable.preloadAll()
+
   const history = createHistory({
     initialEntries: [ctx.request.url]
   })
