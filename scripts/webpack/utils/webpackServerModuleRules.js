@@ -35,8 +35,7 @@ module.exports = function webpackServerModuleRules(dev, name) {
           [require.resolve('babel-plugin-styled-components'), {
             ssr: true
           }],
-          require.resolve('react-hot-loader/babel'),
-          require.resolve('react-loadable/babel')
+          require.resolve('react-hot-loader/babel')
         ]
       }
     },

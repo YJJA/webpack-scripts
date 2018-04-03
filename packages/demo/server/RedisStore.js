@@ -1,7 +1,7 @@
-const Redis = require('ioredis')
-const {EventEmitter} = require('events')
+import Redis from 'ioredis'
+import {EventEmitter} from 'events'
 
-class RedisStore extends EventEmitter {
+export default class RedisStore extends EventEmitter {
   constructor(config = {}) {
     super()
     if (Array.isArray(config.nodes)) {
@@ -59,5 +59,3 @@ class RedisStore extends EventEmitter {
     await this.client.quit()
   }
 }
-
-module.exports = RedisStore

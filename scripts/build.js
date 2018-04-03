@@ -20,12 +20,12 @@ const build = async (names, argv) => {
   names = Array.isArray(names) ? names : [names]
   const promises = names.map(async (name) => {
     console.log(`\n${name} client & server build start .....\n`)
-    // await copyServer(name, argv)
-    const serverConfig = webpackServerConfig(name, argv)
+
     await fse.remove(path.resolve(config.dist, name, 'public', 'static'))
+    const serverConfig = webpackServerConfig(name, argv)
     const clientConfig = webpackClientConfig(name, argv)
-    await runWebpack(serverConfig)
-    await runWebpack(clientConfig)
+    await runWebpack([serverConfig, clientConfig])
+
     console.log(`\n${name} client & server build end .....\n`)
   })
 

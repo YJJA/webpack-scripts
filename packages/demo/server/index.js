@@ -1,20 +1,29 @@
 import Koa from 'koa'
-import serve from 'koa-static'
 import path from 'path'
-import fse from 'fs-extra'
-import React from 'react'
-import ReactDOMServer from 'react-dom/server'
-import {Provider} from 'react-redux'
-import {ConnectedRouter as Router} from 'react-router-redux'
-import createHistory from 'history/createMemoryHistory'
-import Loadable from 'react-loadable'
-import {getBundles} from 'react-loadable/webpack'
-import {ServerStyleSheet, StyleSheetManager} from 'styled-components'
-import configureStore from '../redux/store'
-import App from '../containers/App'
+import http from 'http'
+import bodyParser from 'koa-bodyparser'
+import helmet from 'koa-helmet'
+import morgan from 'koa-morgan'
+import proxy from 'koa-proxies'
+import session from 'koa-session'
+import serve from 'koa-static'
+import RedisStore from './RedisStore'
+
+import renderer from './renderer'
 
 const app = new Koa()
+const appId = 'demo'
 
+const isDev = process.env.NODE_ENV === 'development'
+
+// helmet
+app.use(helmet())
+
+// logger
+app.use(morgan(isDev ? 'dev' : 'combined'))
+
+// static
+app.use(serve(path.resolve(__dirname, 'public')))
 app.use(async (ctx, next) => {
   if (/^\/static\//.test(ctx.path)) {
     await serve(__dirname)(ctx, next)
@@ -23,53 +32,63 @@ app.use(async (ctx, next) => {
   }
 })
 
-app.use(serve(path.resolve(__dirname, 'public')))
+// session
+app.use(session({
+  prefix: `${appId}:`,
+  key: `${appId}`,
+  maxAge: 3 * 60 * 60 * 1000,
+  rolling: true,
+  renew: true
+}, app))
 
+// error
 app.use(async (ctx, next) => {
-  await Loadable.preloadAll()
+  try {
+    await next()
+  } catch (err) {
+    ctx.status = err.status || 500
+    ctx.body = err
+    ctx.app.emit('error', err, ctx)
+  }
+})
 
-  const history = createHistory({
-    initialEntries: [ctx.request.url]
-  })
-  const store = configureStore(history)
+// proxy api
+// app.use(proxy('/api', {
+//   target: 'http://api.demo.com',
+//   changeOrigin: true,
+//   logs: isDev
+// }))
 
-  const indexPath = path.resolve(__dirname, `./index.html`)
-  let content = await fse.readFile(indexPath, 'utf8')
+// body parse
+app.use(bodyParser())
 
-  const statsPath = path.resolve(__dirname, './react-loadable.json')
-  const stats = await fse.readJSON(statsPath)
+// localeData
+app.use(async (ctx, next) => {
+  const initialState = {
+    user: {
+      data: ctx.session.user || null
+    }
+  }
 
-  const modules = []
-  const sheet = new ServerStyleSheet()
-  const html = ReactDOMServer.renderToString(
-    <StyleSheetManager sheet={sheet.instance}>
-      <Loadable.Capture report={moduleName => modules.push(moduleName)}>
-        <Provider store={store}>
-          <Router history={history}>
-            <App/>
-          </Router>
-        </Provider>
-      </Loadable.Capture>
-    </StyleSheetManager>
-  )
+  ctx.localeData = {
+    __APPID__: ctx.appId,
+    __INITIAL_STATE__: initialState
+  }
 
-  const styleTags = sheet.getStyleTags()
-  const bundles = getBundles(stats, modules)
-  const styles = bundles.filter(bundle => bundle.file.endsWith('.css'))
-  const scripts = bundles.filter(bundle => bundle.file.endsWith('.js'))
+  await next()
+})
 
-  content = content.replace('<!--html-->', html)
+// renderer
+app.use(renderer)
 
-  content = content.replace(/(<\/head>)/, `${styles.map(bundle => {
-    return `<link href="/${bundle.file}" rel="stylesheet"/>`
-  }).join('\n')}$1`)
-  content = content.replace(/(<\/head>)/, `${styleTags}$1`)
+// NotFound
+app.use(async (ctx, next) => {
+  ctx.throw(404)
+})
 
-  content = content.replace(/(<\/body>)/, `${scripts.map(bundle => {
-    return `<script src="/${bundle.file}"></script>`
-  }).join('\n')}<script>window.main()</script>$1`)
-
-  ctx.body = content
+// logger error
+app.on('error', (err) => {
+  console.error(err)
 })
 
 export default app.callback()

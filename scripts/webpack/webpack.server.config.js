@@ -30,6 +30,9 @@ module.exports = function webpackServerConfig(name, argv) {
       libraryTarget: 'commonjs',
       chunkFilename: `server/[name].js`
     },
+    optimization: {
+      minimizer: []
+    },
     externals: Object.keys(packageJson.dependencies),
     target: 'node',
     module: {
