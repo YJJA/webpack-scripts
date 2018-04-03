@@ -1,6 +1,6 @@
 
 const path = require('path')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = function (dev, name) {
   return [
@@ -25,10 +25,10 @@ module.exports = function (dev, name) {
     },
     {
       test: /\.css$/,
-      use: ExtractTextPlugin.extract({
-        fallback: 'style-loader',
-        use: ['css-loader']
-      })
+      use: [
+        MiniCssExtractPlugin.loader,
+        'css-loader'
+      ]
     },
     {
       test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,

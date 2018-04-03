@@ -5,11 +5,10 @@ const moment = require('moment')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const LodashModuleReplacementPlugin = require('lodash-webpack-plugin')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
 // const {BundleAnalyzerPlugin} = require('webpack-bundle-analyzer')
 const {ReactLoadablePlugin} = require('react-loadable/webpack')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
-const packageJson = require(path.resolve('./package.json'))
 const config = require('../../config')
 
 module.exports = function (dev, name) {
@@ -37,9 +36,8 @@ module.exports = function (dev, name) {
     new ReactLoadablePlugin({
       filename: `${dev ? config.temp : config.dist}/${name}/react-loadable.json`
     }),
-    new ExtractTextPlugin({
-      filename: `static/styles/[name]${dev ? '' : '.[contenthash]'}` + '.css',
-      allChunks: true
+    new MiniCssExtractPlugin({
+      filename: `static/styles/[name]${dev ? '' : '.[contenthash]'}` + '.css'
     })
   ]
 

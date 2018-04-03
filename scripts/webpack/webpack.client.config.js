@@ -5,7 +5,8 @@
  */
 const path = require('path')
 const webpack = require('webpack')
-
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 const config = require('../config')
 const packageJson = require(path.resolve('./package.json'))
 const webpackModuleRules = require('./utils/webpackModuleRules')
@@ -23,8 +24,18 @@ module.exports = function webpackClientConfig(name, argv) {
     output: {
       path: path.resolve(config.dist, name),
       publicPath: '/',
-      filename: `static/scripts/[name]${dev ? '' : '.[chunkhash]'}.js`,
-      chunkFilename: `static/scripts/[name]${dev ? '' : '.[chunkhash]'}.js`
+      filename: `static/scripts/[name]${dev ? '' : '.[contenthash]'}.js`,
+      chunkFilename: `static/scripts/[name]${dev ? '' : '.[contenthash]'}.js`
+    },
+    optimization: dev ? {} : {
+      minimizer: [
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true // set to true if you want JS source maps
+        }),
+        new OptimizeCSSAssetsPlugin()
+      ]
     },
     resolve: {
       modules: [

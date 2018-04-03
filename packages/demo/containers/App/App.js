@@ -5,12 +5,12 @@ import Loadable from 'react-loadable'
 import Loading from '../../components/Loading'
 
 const Home = Loadable({
-  loader: () => import('../Home'),
+  loader: () => import(/* webpackChunkName: Home */'../Home'),
   loading: Loading
 })
 
 const NotFound = Loadable({
-  loader: () => import('../NotFound'),
+  loader: () => import(/* webpackChunkName: NotFound */'../NotFound'),
   loading: Loading
 })
 
