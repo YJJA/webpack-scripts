@@ -30,11 +30,19 @@ module.exports = function webpackClientConfig(name, argv) {
     optimization: dev ? {} : {
       minimizer: [
         new UglifyJsPlugin({
+          compress: {
+            drop_console: true
+          },
           cache: true,
           parallel: true,
           sourceMap: true // set to true if you want JS source maps
         }),
-        new OptimizeCSSAssetsPlugin()
+        new OptimizeCSSAssetsPlugin({
+          cssProcessorOptions: {
+            safe: true,
+            discardComments: {removeAll: true}
+          }
+        })
       ]
     },
     resolve: {
