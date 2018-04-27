@@ -19,15 +19,18 @@ module.exports = function webpackClientConfig(name, argv) {
     mode: dev ? 'development' : 'production',
     entry: dev ? [
       'webpack-hot-middleware/client?reload=true',
-      path.resolve(`./packages/${name}/client.js`)
-    ] : path.resolve(`./packages/${name}/client.js`),
+      path.resolve(`./packages/${name}/client`)
+    ] : path.resolve(`./packages/${name}/client`),
     output: {
       path: path.resolve(config.dist, name),
       publicPath: '/',
       filename: `static/scripts/[name]${dev ? '' : '.[contenthash]'}.js`,
       chunkFilename: `static/scripts/[name]${dev ? '' : '.[contenthash]'}.js`
     },
-    optimization: dev ? {} : {
+    optimization: dev ? undefined : {
+      runtimeChunk: {
+        name: 'manifest'
+      },
       minimizer: [
         new UglifyJsPlugin({
           uglifyOptions: {
