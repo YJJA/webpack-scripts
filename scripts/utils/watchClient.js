@@ -33,7 +33,7 @@ module.exports = (name, argv) => {
       const filePath = path.join(clientConfig.output.path, 'view/index.html')
       if (fsd.existsSync(filePath)) {
         let index = fsd.readFileSync(filePath, 'utf-8')
-        const indexPath = path.resolve(config.temp, name, 'index.html')
+        const indexPath = config.getDistPath(name, true, 'index.html')
         fse.outputFileSync(indexPath, index, 'utf8')
       }
 

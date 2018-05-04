@@ -24,7 +24,7 @@ module.exports = function webpackServerConfig(name, argv) {
     ] : path.resolve(`packages/${name}/index`),
     mode: dev ? 'development' : 'production',
     output: {
-      path: path.resolve(dev ? config.temp : config.dist, name),
+      path: config.getDistPath(name, dev),
       publicPath: '/',
       filename: 'server.js',
       libraryTarget: 'commonjs',

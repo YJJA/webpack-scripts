@@ -22,7 +22,7 @@ module.exports = function webpackClientConfig(name, argv) {
       path.resolve(`./packages/${name}/client`)
     ] : path.resolve(`./packages/${name}/client`),
     output: {
-      path: path.resolve(config.dist, name),
+      path: config.getDistPath(name, dev),
       publicPath: '/',
       filename: `static/scripts/[name]${dev ? '' : '.[contenthash]'}.js`,
       chunkFilename: `static/scripts/[name]${dev ? '' : '.[contenthash]'}.js`
@@ -53,6 +53,7 @@ module.exports = function webpackClientConfig(name, argv) {
     resolve: {
       modules: [
         path.resolve('./packages'),
+        path.resolve(`./packages/${name}/node_modules`),
         path.resolve('./node_modules')
       ]
     },

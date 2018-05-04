@@ -1,7 +1,10 @@
 const path = require('path')
 // temp build dirname
 module.exports = {
-  dist: path.resolve('./build/packages'),
   distRoot: path.resolve('./build'),
-  temp: path.resolve('./node_modules/.cloud-cache')
+  getDistPath: function (name, dev, ...args) {
+    return dev
+      ? path.resolve(`./packages/${name}/node_modules/.temp`, ...args)
+      : path.resolve(`./build/packages/${name}`, ...args)
+  }
 }

@@ -20,17 +20,12 @@ const runServer = require('./utils/runServer')
 // start
 const start = async (name, argv) => {
   // 删除临时文件
-  await fse.remove(path.resolve(config.temp, name))
+  await fse.remove(config.getDistPath(name, true))
   // 启动客户端编译服务
   const clientPromise = watchClient(name, argv)
   // 启动服务端编译服务
   let serverpath = await watchServer(name, argv)
-  // if (argv.server) {
-  //   console.log('watchServer')
-  //   serverpath = await watchServer(name, argv)
-  // } else {
-  //   serverpath = await copyServer(name, argv)
-  // }
+
   const serverPromise = runServer(serverpath)
   const [middleware, port] = await Promise.all([clientPromise, serverPromise])
 

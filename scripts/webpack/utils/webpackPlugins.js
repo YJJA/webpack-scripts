@@ -34,7 +34,7 @@ module.exports = function (dev, name) {
       paths: true
     }),
     new ReactLoadablePlugin({
-      filename: `${dev ? config.temp : config.dist}/${name}/react-loadable.json`
+      filename: config.getDistPath(name, dev, 'react-loadable.json')
     }),
     new MiniCssExtractPlugin({
       filename: `static/styles/[name]${dev ? '' : '.[contenthash]'}` + '.css'

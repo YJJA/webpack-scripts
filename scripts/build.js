@@ -21,7 +21,7 @@ const build = async (names, argv) => {
   const promises = names.map(async (name) => {
     console.log(`\n${name} client & server build start .....\n`)
 
-    await fse.remove(path.resolve(config.dist, name, 'public', 'static'))
+    await fse.remove(config.getDistPath(name, false, 'public', 'static'))
     const serverConfig = webpackServerConfig(name, argv)
     const clientConfig = webpackClientConfig(name, argv)
     await runWebpack([serverConfig, clientConfig])
