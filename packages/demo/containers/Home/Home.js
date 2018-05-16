@@ -1,4 +1,5 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 
 import Title from '../../components/Title'
 
@@ -11,6 +12,7 @@ class Home extends React.Component {
       <div>
         <Title>{this.state.title}</Title>
         <div>Home Page</div>
+        <Link data-testid="not" to="/not-found">Not Found</Link>
       </div>
     )
   }

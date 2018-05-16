@@ -1,3 +1,3 @@
-import idObj from 'identity-obj-proxy'
+const idObj = require('identity-obj-proxy')
 
-export default idObj
+module.exports = idObj
