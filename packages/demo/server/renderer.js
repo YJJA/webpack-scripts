@@ -66,9 +66,10 @@ export default async function renderer(ctx, next) {
   content = content.replace(/(<\/head>)/, `${styleTags}$1`)
 
   // 脚本引用
-  content = content.replace(/(<\/body>)/, `${scripts.map(bundle => {
+  const scriptsarr = scripts.map(bundle => {
     return `<script src="/${bundle.file}"></script>`
-  }).join('\n')}<script>window.main()</script>$1`)
+  })
+  content = content.replace(/(<\/body>)/, `${scriptsarr.join('\n')}<script>window.main()</script>$1`)
 
   ctx.body = content
 }

@@ -20,7 +20,28 @@ module.exports = function (dev, name) {
       exclude: /node_modules/,
       loader: 'babel-loader',
       options: {
-        cacheDirectory: true
+        babelrc: false,
+        cacheDirectory: false,
+        presets: [
+          [require.resolve('@babel/preset-env'), {
+            modules: false,
+            targets: {
+              browsers: ['> 1%', 'last 4 versions', 'ie >= 9', 'Firefox ESR']
+            }
+          }],
+          require.resolve('@babel/preset-react')
+        ],
+        plugins: [
+          require.resolve('@babel/plugin-transform-runtime'),
+          require.resolve('@babel/plugin-proposal-object-rest-spread'),
+          require.resolve('@babel/plugin-proposal-class-properties'),
+          require.resolve('@babel/plugin-syntax-dynamic-import'),
+          [require.resolve('babel-plugin-styled-components'), {
+            ssr: true
+          }],
+          require.resolve('react-hot-loader/babel'),
+          require.resolve('react-loadable/babel')
+        ]
       }
     },
     {
